@@ -20,13 +20,13 @@ class ShophubController < ApplicationController
 	# maybe i think "/page" directive add.
     def get_by_freeword
 		key_word = params[:key_word]
-		shops = Hotpepper.search_keyword(key_word, 50, 1)
+		next_start = params[:next_start]
+		shops = Hotpepper.search_keyword(key_word, 50, next_start)
 		@results_available = shops.attributes['results_available']
 		@results_start = shops.attributes['results_start']
 		@results_returned = shops.attributes['results_returned']
 		@next_start = get_next_start
 
-			
 		@shops = shops.attributes['shop']
 		@key_word = key_word   	
     end

@@ -23,6 +23,9 @@
 		<div id="counts"></div>
 		<div id="next_start"></div>
 	</section>
+	<section>
+		<div id="jQueryPinHolder"></div>
+	</section>
 </div>
 
 <script type="text/javascript">
@@ -37,7 +40,7 @@ $(function(){
 
 });
 
-function new_map(center, zoom) {
+new_map = function(center, zoom) {
 		map = new google.maps.Map($("#map")[0], {
 		mapTypeId: google.maps.MapTypeId.ROADMAP
 		,disableDefaultUI: true
@@ -47,7 +50,7 @@ function new_map(center, zoom) {
 	return map;
 }
 
-function createMarker(shop) {
+createMarker = function(shop) {
 
 	var marker = new google.maps.Marker({
 		position:  new google.maps.LatLng(shop.lat, shop.lng)
@@ -58,13 +61,13 @@ function createMarker(shop) {
 	return marker;
 }
 
-function clearMarker() {
+clearMarker = function() {
 	marker_list.forEach(function(marker, idx){
 		marker.setMap(null);
 	});
 }
 
-function addInfoWindow(marker, shop) {
+addInfoWindow =　function(marker, shop) {
 	var contents = '<img src="' + shop.m + '"> <br>'
 	　 + '<a target="_blank" href="' + shop.pc + '">' + shop.name + '</a> <br>' + '<p style="font-size: 12px;">Powered by<a href="http://webservice.recruit.co.jp/">ホットペッパー Webサービス</a></p>';
 
@@ -77,55 +80,65 @@ function addInfoWindow(marker, shop) {
 	});
 }
 
-function createPanToMapOptions() {
+createPanToMapOptions = function() {
 	var options = {
 			zoom: 16
 		};
 	return options;
 }
 
-function search_free_word() {
+createShopDetail = function(obj, shop) {
+	obj.append($('<div class="pin"></div>')
+		.append('<img src="' + shop.m + '">')
+		.append('<a target="_blank" href="' + shop.pc + '">' + shop.name + '</a><br>')
+		.append('<p><a href="http://webservice.recruit.co.jp/"><img src="http://webservice.recruit.co.jp/banner/hotpepper-s.gif" alt="ホットペッパー Webサービス" width="135" height="17" border="0" title="ホットペッパー Webサービス"></a></p>'));
+}
+
+dropMarkers = function(data) {
+	clearMarker();
+	var option_data = JSON.parse(JSON.stringify(data));
+	var shops = option_data.shops;
+	var shop;
+	for(var i=0; i<shops.length; i++) {
+		shop = shops[i];
+		
+		var marker = createMarker(shop);
+		marker_list.push(marker);
+		addInfoWindow(marker, shop);
+
+		createShopDetail($("#jQueryPinHolder"),shop);
+	}
+
+	$("#counts").html(option_data.counts);
+	localStorage.setItem("page", option_data.page);
+	var center = new google.maps.LatLng(shops[0].lat, shops[0].lng);
+	map.setOptions(createPanToMapOptions());
+	map.panTo(center);
+}
+
+searchFreeWord = function(next_start) {
 	var key_word = $("#key_word").val();
 
 	if (key_word) {
-		if(!map) {
-			map = new_map(new google.maps.LatLng(38, 138), 5);
-		}
 			
-		$.get("/shophub/get_by_freeword.json/", {key_word: key_word}, 
+		$.get("/shophub/get_by_freeword.json/", {key_word: key_word, next_start: next_start}, 
 
 		function(data){
-			clearMarker();
-			var option_data = JSON.parse(JSON.stringify(data));
-			var shops = option_data.shops;
-			var shop;
-			for(var i=0; i<shops.length; i++) {
-				shop = shops[i];
-				
-				var marker = createMarker(shop);
-				marker_list.push(marker);
-				addInfoWindow(marker, shop);
+			if(!map) {
+				map = new_map(new google.maps.LatLng(38, 138), 5);
 			}
-
-			$("#counts").html(option_data.counts);
-			$("#next_start").html(option_data.next_start);
-			localStorage.setItem("page", option_data.page);
-			var center = new google.maps.LatLng(shops[0].lat, shops[0].lng);
-			map.setOptions(createPanToMapOptions());
-			map.panTo(center);
+			dropMarkers(data);
 		});
 	}
 }
 
-
-
 $(document).keypress(function(e){
 	if (e.which == 13) {
-		search_free_word();
+		searchFreeWord();
 	}
 });
 
 $("#search_button").click(function() {
-		search_free_word();
+		searchFreeWord(1);
 });
 </script>	
