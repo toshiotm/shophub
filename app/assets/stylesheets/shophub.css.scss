@@ -14,10 +14,18 @@ body {
 	background: white;
 }
 
-#map {
-	margin: 0 auto;
+#scroll_area {
 	width: 880px;
-	height: 100%;
+	margin: 0 auto;
+}
+
+/* #search_area {
+	width: 80%;
+ }*/
+
+#map {
+	width: 800px;
+	height: 500px;
 }
 
 /* site logo1 */
@@ -40,6 +48,7 @@ body {
  .description {
  	font-size: 15px;
  }
+
 
 /* key word input area */
  #key_word {
