@@ -2,7 +2,13 @@ source 'https://rubygems.org'
 
 gem 'rails', '4.0.0.beta1'
 
-gem 'sqlite3'
+
+group :production do
+     gem 'mysql'
+end
+group :development, :test do
+    gem 'sqlite3-ruby', :require => 'sqlite3'
+end
 
 group :assets do
   gem 'sass-rails',   '~> 4.0.0.beta1'
