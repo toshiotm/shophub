@@ -21,7 +21,7 @@ class ShophubController < ApplicationController
     def get_by_freeword
 		key_word = params[:key_word]
 		next_start = params[:next_start]
-		shops = Hotpepper.search_keyword(key_word, 50, next_start)
+		shops = Hotpepper.search_keyword(key_word, 15, next_start)
 		@results_available = shops.attributes['results_available']
 		@results_start = shops.attributes['results_start']
 		@results_returned = shops.attributes['results_returned']
