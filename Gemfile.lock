@@ -136,6 +136,7 @@ PLATFORMS
 
 DEPENDENCIES
   activeresource!
+  activesupport (= 4.0.0.beta1)
   coffee-rails (~> 4.0.0.beta1)
   jbuilder (~> 1.0.1)
   jquery-rails
