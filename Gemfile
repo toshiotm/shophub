@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby 'ruby-2.0.0-p0'
+ruby 'ruby-2.0.0'
 
 gem 'activesupport', '4.0.0.beta1'
 
