@@ -1,6 +1,6 @@
 Shophub::Application.routes.draw do
 
-  # root :to => 'shophub#index'
+  root :to => 'shophub#index'
   resources :shophub do
     collection do
       get 'get_by_lat_lng'
