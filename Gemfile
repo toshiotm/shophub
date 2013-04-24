@@ -6,12 +6,14 @@ gem 'rails', '4.0.0.beta1'
 
 gem 'activesupport', '4.0.0.beta1'
 
-group :production do
-     gem 'pg'
-end
-group :development, :test do
-    gem 'sqlite3-ruby', :require => 'sqlite3'
-end
+# group :production do
+#      gem 'pg'
+# end
+# group :development, :test do
+#     gem 'sqlite3-ruby', :require => 'sqlite3'
+# end
+
+gem 'pg'
 
 group :assets do
   gem 'sass-rails',   '~> 4.0.0.beta1'
